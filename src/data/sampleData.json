@@ -1,0 +1,15 @@
+{
+  "defaultCount": 30,
+  "specialDays": [
+    { "date": "2025-02-15", "count": 60 },
+    { "date": "2025-02-28", "count": 60 },
+    { "date": "2025-03-10", "count": 60 },
+    { "date": "2025-03-22", "count": 60 },
+    { "date": "2025-03-30", "count": 60 },
+    { "date": "2025-04-02", "count": 60 }
+  ],
+  "zeroPushupPeriod": {
+    "start": "2025-01-01",
+    "end": "2025-01-19"
+  }
+}
