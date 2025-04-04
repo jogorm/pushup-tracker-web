@@ -4,19 +4,27 @@ import {
   Button, 
   Typography, 
   Paper,
-  IconButton
+  IconButton,
+  Stack
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
-export const PushupCounter = ({ onSave }) => {
-  const [count, setCount] = useState(30);
+export const PushupCounter = ({ onSave, defaultCount = 30 }) => {
+  const [count, setCount] = useState(defaultCount);
+  const [showCustomCount, setShowCustomCount] = useState(false);
 
   const handleIncrement = () => setCount(prev => prev + 1);
   const handleDecrement = () => setCount(prev => Math.max(0, prev - 1));
   
-  const handleSave = () => {
+  const handleQuickSave = () => {
+    onSave(defaultCount);
+  };
+
+  const handleCustomSave = () => {
     onSave(count);
+    setShowCustomCount(false);
   };
 
   return (
@@ -33,31 +41,54 @@ export const PushupCounter = ({ onSave }) => {
         mt: 2
       }}
     >
-      <Typography variant="h5" component="h2">
+      <Typography variant="h5" component="h2" gutterBottom>
         Today's Pushups
       </Typography>
+
+      {!showCustomCount ? (
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          startIcon={<FitnessCenterIcon />}
+          onClick={handleQuickSave}
+          sx={{ py: 2, px: 4 }}
+        >
+          I Did {defaultCount} Today! 💪
+        </Button>
+      ) : (
+        <Stack spacing={2} alignItems="center" width="100%">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <IconButton onClick={handleDecrement} color="primary">
+              <RemoveIcon />
+            </IconButton>
+            
+            <Typography variant="h4">
+              {count}
+            </Typography>
+            
+            <IconButton onClick={handleIncrement} color="primary">
+              <AddIcon />
+            </IconButton>
+          </Box>
+          
+          <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={handleCustomSave}
+            fullWidth
+          >
+            Save
+          </Button>
+        </Stack>
+      )}
       
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <IconButton onClick={handleDecrement} color="primary">
-          <RemoveIcon />
-        </IconButton>
-        
-        <Typography variant="h4">
-          {count}
-        </Typography>
-        
-        <IconButton onClick={handleIncrement} color="primary">
-          <AddIcon />
-        </IconButton>
-      </Box>
-      
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleSave}
-        fullWidth
+      <Button
+        variant="text"
+        color="secondary"
+        onClick={() => setShowCustomCount(!showCustomCount)}
       >
-        Save
+        {showCustomCount ? "Use Quick Save" : "Enter Custom Amount"}
       </Button>
     </Paper>
   );
