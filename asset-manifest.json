@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pushup-tracker-web/static/css/main.e6c13ad2.css",
+    "main.js": "/pushup-tracker-web/static/js/main.ba54db02.js",
+    "static/js/453.469e985a.chunk.js": "/pushup-tracker-web/static/js/453.469e985a.chunk.js",
+    "index.html": "/pushup-tracker-web/index.html",
+    "main.e6c13ad2.css.map": "/pushup-tracker-web/static/css/main.e6c13ad2.css.map",
+    "main.ba54db02.js.map": "/pushup-tracker-web/static/js/main.ba54db02.js.map",
+    "453.469e985a.chunk.js.map": "/pushup-tracker-web/static/js/453.469e985a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.ba54db02.js"
+  ]
+}
