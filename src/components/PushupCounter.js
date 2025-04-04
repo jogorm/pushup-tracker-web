@@ -5,15 +5,21 @@ import {
   Typography, 
   Paper,
   IconButton,
-  Stack
+  Stack,
+  Alert
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export const PushupCounter = ({ onSave, defaultCount = 30 }) => {
+export const PushupCounter = ({ onSave, defaultCount = 30, history }) => {
   const [count, setCount] = useState(defaultCount);
   const [showCustomCount, setShowCustomCount] = useState(false);
+
+  const today = new Date().toISOString().split('T')[0];
+  const todayEntry = history.find(entry => entry.date === today);
+  const isDone = !!todayEntry;
 
   const handleIncrement = () => setCount(prev => prev + 1);
   const handleDecrement = () => setCount(prev => Math.max(0, prev - 1));
@@ -26,6 +32,41 @@ export const PushupCounter = ({ onSave, defaultCount = 30 }) => {
     onSave(count);
     setShowCustomCount(false);
   };
+
+  if (isDone) {
+    return (
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: 3, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          gap: 2,
+          maxWidth: 400,
+          mx: 'auto',
+          mt: 2,
+          bgcolor: 'success.dark'
+        }}
+      >
+        <CheckCircleIcon sx={{ fontSize: 48, color: 'white' }} />
+        <Typography variant="h5" component="h2" color="white" align="center">
+          Well Done! 💪
+        </Typography>
+        <Typography variant="h6" color="white" align="center">
+          You did {todayEntry.count} pushups today
+        </Typography>
+        <Button
+          variant="outlined"
+          color="inherit"
+          onClick={() => setShowCustomCount(true)}
+          sx={{ color: 'white', borderColor: 'white' }}
+        >
+          Update Today's Count
+        </Button>
+      </Paper>
+    );
+  }
 
   return (
     <Paper 
@@ -41,9 +82,9 @@ export const PushupCounter = ({ onSave, defaultCount = 30 }) => {
         mt: 2
       }}
     >
-      <Typography variant="h5" component="h2" gutterBottom>
-        Today's Pushups
-      </Typography>
+      <Alert severity="warning" sx={{ width: '100%' }}>
+        You haven't logged your pushups for today yet!
+      </Alert>
 
       {!showCustomCount ? (
         <Button
@@ -83,13 +124,15 @@ export const PushupCounter = ({ onSave, defaultCount = 30 }) => {
         </Stack>
       )}
       
-      <Button
-        variant="text"
-        color="secondary"
-        onClick={() => setShowCustomCount(!showCustomCount)}
-      >
-        {showCustomCount ? "Use Quick Save" : "Enter Custom Amount"}
-      </Button>
+      {!isDone && (
+        <Button
+          variant="text"
+          color="secondary"
+          onClick={() => setShowCustomCount(!showCustomCount)}
+        >
+          {showCustomCount ? "Use Quick Save" : "Enter Custom Amount"}
+        </Button>
+      )}
     </Paper>
   );
 };

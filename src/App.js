@@ -44,7 +44,7 @@ function App() {
             Pushup Tracker
           </Typography>
           
-          <PushupCounter onSave={addPushups} />
+          <PushupCounter onSave={addPushups} history={history} />
           <YearOverview history={history} />
           <CalendarView history={history} />
           <HistoryView history={history} onReset={reset} />

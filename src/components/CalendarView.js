@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Paper, 
   Typography,
   Grid,
   Box,
-  useTheme
+  useTheme,
+  IconButton
 } from '@mui/material';
 import {
   format,
@@ -12,16 +13,27 @@ import {
   endOfMonth,
   eachDayOfInterval,
   isSameMonth,
-  isToday
+  isToday,
+  addMonths,
+  subMonths
 } from 'date-fns';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 export const CalendarView = ({ history }) => {
   const theme = useTheme();
-  const today = new Date();
-  const start = startOfMonth(today);
-  const end = endOfMonth(today);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const start = startOfMonth(currentDate);
+  const end = endOfMonth(currentDate);
 
-  const days = eachDayOfInterval({ start, end });
+  const handlePreviousMonth = () => {
+    setCurrentDate(prev => subMonths(prev, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(prev => addMonths(prev, 1));
+  };
+
   const firstDayOfMonth = start.getDay();
 
   // Create the day cells for the calendar
@@ -61,11 +73,26 @@ export const CalendarView = ({ history }) => {
         mb: 2
       }}
     >
-      <Typography variant="h5" component="h2" gutterBottom align="center">
-        {format(today, 'MMMM yyyy')}
-      </Typography>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        mb: 2
+      }}>
+        <IconButton onClick={handlePreviousMonth}>
+          <ChevronLeftIcon />
+        </IconButton>
+        
+        <Typography variant="h5" component="h2">
+          {format(currentDate, 'MMMM yyyy')}
+        </Typography>
+        
+        <IconButton onClick={handleNextMonth}>
+          <ChevronRightIcon />
+        </IconButton>
+      </Box>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={1}>
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
           <Grid item xs={12/7} key={day}>
             <Typography align="center" fontWeight="bold">
